@@ -144,7 +144,7 @@ end
 
 on :channel, /^:quote (\w+)\^?(\d*)/ do |user, offset|
   offset = offset.try(:to_i) || 1
-  quote = Message.find(:last, :conditions => {:nick => user}, :offset => (offset - 1))
+  quote = Message.where(:nick => user).offset(offset - 1).last
   if quote
     quote.update_attributes(:preserve => true)
     msg channel, "#{nick}: The operation was a success."
